@@ -13,9 +13,9 @@ class Hangman
       ("a".."z").each{|char| remaining << char}
       @rem_letters = remaining
       @yays = ["Hooray!", "Alright!", "Oh man, great!", "Super!", "Super-Duper!", "Nice!", "Fantastic!", "Excelsior!", "Nice goin'!", "You're the best!", "There ya go!", "Good going!", "Great!", "Whoopee!", "Excellent!",\
-        "Radical!", "Magnificent!", "Hey!", "Oh!", "Wow!", "I am so psyched for you!", "That's what I'm talkin' 'bout!", "Way to go!"]
+        "Radical!", "Magnificent!", "Hey!", "Oh!", "Wow!", "I am so psyched for you!", "That's what I'm talkin' 'bout!", "Way to go!", "That's how we do it!", "You're so smart!", "Clever!", "I knew you knew!"]
       @curses = ["Rats!", "Aw, dang!", "Darnit!", "Gee whiz!", "Well golly gee!", "Jeepers!", "Lord have mercy!", "Well I'll be...", "What in tarnations?", "Confound it!", "Dag-nabbit!", "Curses!", "Fiddlesticks!", "Well wouldn't you just know it.",\
-        "Phooey.", "Grumble!", "Shucks.", "Great Googley-Moogley!", "Egads!", "Alas!", "Abandon ship!", "Bah-humbug!"]
+        "Phooey.", "Grumble!", "Shucks.", "Great Googley-Moogley!", "Egads!", "Alas!", "Abandon ship!", "Bah-humbug!", "Really, though?", "I can't even!", "It wasn't supposed to be like this!", "If I had a nickel.."]
       @errors_allowed = errors_allowed
       @guesses = 0
     end
@@ -100,18 +100,20 @@ class Hangman
     end
     
     def win_message()
-      puts "", "That's a wrap! You win! You conquered the word \'#{@secret_word.join('')}\' in a mere #{@guesses} turns!"
+      puts "", "That's a wrap! You win! You conquered the word \'#{@secret_word.join('')}\' in a mere #{@guesses} turns!", "Press enter to continue"
+      gets
     end
     
     def lose_message()
       puts "", "Oh no! You didn't quite guess the secret word \'#{@secret_word.join('')}\' in your allowable error allotment of #{@errors_allowed} errors!"
-      puts "", "Game over!", ""
+      puts "", "Game over!", "", "Press enter to continue"
+      gets
     end
     
     def save_game()
       yaml = YAML::dump(self)
       Dir.mkdir("../save") unless File.exists?("../save")
-      File.open("../save/save_game_#{Time.now.strftime('%m-%d-%Y, %H:%M')}.yaml", "w"){|f| f.puts yaml}
+      File.open("../save/save_game_#{Time.now.strftime('%m-%d-%Y, %H:%M:%S')}.yaml", "w"){|f| f.puts yaml}
       puts "", "Game has been saved!", "Press enter to continue"
       gets
     end
@@ -155,7 +157,7 @@ class Hangman
   end
   
   def sanitize_menu_option(user_input)
-    if ( (user_input.to_i.to_s == user_input) && ( user_input.to_i == 1 || user_input.to_i == 2 || user_input.to_i == 3) )
+    if user_input.to_i.to_s == user_input && user_input.to_i >= 1 && user_input.to_i <= 4
       return user_input.to_i
     else
       return :no_good
@@ -177,7 +179,7 @@ class Hangman
   end
   
   def sanitize_load_input(user_input, saves)
-    if user_input.to_i.to_s == user_input && user_input.to_i > 0 && user_input.to_i <= saves.length
+    if user_input.to_i.to_s == user_input && user_input.to_i >= 0 && user_input.to_i <= saves.length
       return user_input.to_i
     else
       return :no_good
@@ -187,16 +189,17 @@ class Hangman
   def load_game()
     if File.exists?("../save") && Dir.glob("../save/*").length > 0
       saves = Dir.glob("../save/*")
-      puts ""
+      puts "", "Please enter a number:", "0. cancel"
       saves.each_with_index do |save, index|
         puts "#{index + 1}. #{File.basename(save).split(".")[0]}"
       end
-      puts "", "Please enter a number for the saved game you'd like to load"
       loop do
         user_input = gets.chomp
         user_input_san = sanitize_load_input(user_input, saves)
         if user_input_san == :no_good
-          puts "Please enter a number corresponding to a saved game."
+          puts "Please enter a number corresponding to a saved game, or 0 to cancel and go back."
+        elsif user_input_san == 0
+          return
         else
           yaml = File.read(saves[user_input_san - 1])
           game = YAML::load(yaml)
@@ -210,14 +213,32 @@ class Hangman
     end
   end
       
+  def delete_saves()
+    puts "", "Are you sure?", "1. Yes, delete all save files.", "2. No, let's not."
+    loop do
+      user_input = gets.chomp.to_i
+      case user_input
+      when 1
+        saves = Dir.glob("../save/*")
+        saves.each {|file| File.delete(file)}
+        puts "", "Save data cleared!"
+        return
+      when 2
+        return
+      else
+        puts "", "Please enter 1 or 2!"
+      end
+    end
+  end
+      
   def hangman()
     puts "", "Welcome to generic command-line Hangman!"  
     loop do
-      puts "", "Please enter a number:", "1. Start a new game", "2. Load a saved game", "3. Exit the program"
+      puts "", "Please enter a number:", "1. Start a new game", "2. Load a saved game", "3. Clear saved game files", "4. Exit the program"
       user_input = gets.chomp
       user_input_san = sanitize_menu_option(user_input)
       if user_input_san == :no_good
-        puts "", "Please re-enter your menu choice!", ""
+        puts "", "Please re-enter your menu choice!"
       else
         case user_input_san
         when 1
@@ -227,6 +248,13 @@ class Hangman
         when 2
           load_game()
         when 3
+          saves = Dir.glob("../save/*")
+          if saves.length == 0
+            puts "", "I'm afraid there's no data to clear!"
+          else
+            delete_saves()
+          end
+        when 4
           puts "", "Thanks for playing!"
           return
         end
