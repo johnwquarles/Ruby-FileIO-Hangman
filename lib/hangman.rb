@@ -111,7 +111,7 @@ class Hangman
     def save_game()
       yaml = YAML::dump(self)
       Dir.mkdir("../save") unless File.exists?("../save")
-      File.open("../save/save_game.yaml", "w"){|f| f.puts yaml}
+      File.open("../save/save_game_#{Time.now.strftime('%m-%d-%Y, %H:%M')}.yaml", "w"){|f| f.puts yaml}
       puts "", "Game has been saved!", "Press enter to continue"
       gets
     end
@@ -169,13 +169,47 @@ class Hangman
       user_input = gets.chomp
       user_input_san = sanitize_errors_allowed(user_input)
       if user_input_san == :no_good
-        puts "Please enter a number from 12 to 18"
+        puts "Please enter a number from 12 to 18."
       else
         return user_input_san
       end
     end
   end
   
+  def sanitize_load_input(user_input, saves)
+    if user_input.to_i.to_s == user_input && user_input.to_i > 0 && user_input.to_i <= saves.length
+      return user_input.to_i
+    else
+      return :no_good
+    end
+  end
+  
+  def load_game()
+    if File.exists?("../save") && Dir.glob("../save/*").length > 0
+      saves = Dir.glob("../save/*")
+      puts ""
+      saves.each_with_index do |save, index|
+        puts "#{index + 1}. #{File.basename(save).split(".")[0]}"
+      end
+      puts "", "Please enter a number for the saved game you'd like to load"
+      loop do
+        user_input = gets.chomp
+        user_input_san = sanitize_load_input(user_input, saves)
+        if user_input_san == :no_good
+          puts "Please enter a number corresponding to a saved game."
+        else
+          yaml = File.read(saves[user_input_san - 1])
+          game = YAML::load(yaml)
+          puts "", "Game loaded!"
+          game.game_start()
+          return
+        end
+      end
+    else
+      puts "", "No save game files found!"
+    end
+  end
+      
   def hangman()
     puts "", "Welcome to generic command-line Hangman!"  
     loop do
@@ -191,14 +225,7 @@ class Hangman
           game = Game.new(errors_allowed)
           game.game_start()
         when 2
-          if File.exists?("../save/save_game.yaml")
-            yaml = File.read("../save/save_game.yaml")
-            game = YAML::load(yaml)
-            puts "", "Game loaded!"
-            game.game_start()
-          else
-            puts "", "No save game file found!"
-          end
+          load_game()
         when 3
           puts "", "Thanks for playing!"
           return

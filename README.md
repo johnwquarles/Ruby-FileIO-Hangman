@@ -7,4 +7,4 @@ The idea behind making this game was to utilize Ruby's File IO methods-- pulling
 
 I accomplished the latter using yaml.
 
-At the moment you're able to save and load your game to one save slot. I'd like to expand on this and let the user create/load multiple saves.
+Users are now able to save multiple times and choose which save they'd like to load from a menu.
