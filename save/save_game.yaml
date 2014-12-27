@@ -1,0 +1,98 @@
+--- !ruby/object:Hangman::Game
+secret_word:
+- h
+- e
+- a
+- r
+- t
+secret_word_rem:
+- t
+hits:
+- h
+- e
+- a
+- r
+- '-'
+misses:
+- p
+- f
+- b
+- c
+- d
+- g
+rem_letters:
+- '-'
+- '-'
+- '-'
+- '-'
+- '-'
+- '-'
+- '-'
+- '-'
+- i
+- j
+- k
+- l
+- m
+- n
+- o
+- '-'
+- q
+- '-'
+- s
+- t
+- u
+- v
+- w
+- x
+- y
+- z
+yays:
+- Hooray!
+- Alright!
+- Oh man, great!
+- Super!
+- Super-Duper!
+- Nice!
+- Fantastic!
+- Excelsior!
+- Nice goin'!
+- You're the best!
+- There ya go!
+- Good going!
+- Great!
+- Whoopee!
+- Excellent!
+- Radical!
+- Magnificent!
+- Hey!
+- Oh!
+- Wow!
+- I am so psyched for you!
+- That's what I'm talkin' 'bout!
+- Way to go!
+curses:
+- Rats!
+- Aw, dang!
+- Darnit!
+- Gee whiz!
+- Well golly gee!
+- Jeepers!
+- Lord have mercy!
+- Well I'll be...
+- What in tarnations?
+- Confound it!
+- Dag-nabbit!
+- Curses!
+- Fiddlesticks!
+- Well wouldn't you just know it.
+- Phooey.
+- Grumble!
+- Shucks.
+- Great Googley-Moogley!
+- Egads!
+- Alas!
+- Abandon ship!
+- Bah-humbug!
+errors_allowed: 12
+guesses: 10
