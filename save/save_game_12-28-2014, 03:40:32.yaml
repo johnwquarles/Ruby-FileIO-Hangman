@@ -1,0 +1,119 @@
+--- !ruby/object:Hangman::Game
+secret_word:
+- g
+- i
+- a
+- c
+- o
+- m
+- e
+- t
+- t
+- i
+secret_word_rem:
+- g
+- i
+- a
+- c
+- o
+- m
+- e
+- t
+- t
+- i
+hits:
+- '-'
+- '-'
+- '-'
+- '-'
+- '-'
+- '-'
+- '-'
+- '-'
+- '-'
+- '-'
+misses: []
+rem_letters:
+- a
+- b
+- c
+- d
+- e
+- f
+- g
+- h
+- i
+- j
+- k
+- l
+- m
+- n
+- o
+- p
+- q
+- r
+- s
+- t
+- u
+- v
+- w
+- x
+- y
+- z
+yays:
+- Hooray!
+- Alright!
+- Oh man, great!
+- Super!
+- Super-Duper!
+- Nice!
+- Fantastic!
+- Excelsior!
+- Nice goin'!
+- You're the best!
+- There ya go!
+- Good going!
+- Great!
+- Whoopee!
+- Excellent!
+- Radical!
+- Magnificent!
+- Hey!
+- Oh!
+- Wow!
+- I am so psyched for you!
+- That's what I'm talkin' 'bout!
+- Way to go!
+- That's how we do it!
+- You're so smart!
+- Clever!
+- I knew you knew!
+curses:
+- Rats!
+- Aw, dang!
+- Darnit!
+- Gee whiz!
+- Well golly gee!
+- Jeepers!
+- Lord have mercy!
+- Well I'll be...
+- What in tarnations?
+- Confound it!
+- Dag-nabbit!
+- Curses!
+- Fiddlesticks!
+- Well wouldn't you just know it.
+- Phooey.
+- Grumble!
+- Shucks.
+- Great Googley-Moogley!
+- Egads!
+- Alas!
+- Abandon ship!
+- Bah-humbug!
+- Really, though?
+- I can't even!
+- It wasn't supposed to be like this!
+- If I had a nickel..
+errors_allowed: 12
+guesses: 0
